@@ -1,0 +1,67 @@
+type Mutation {
+  createUser(input: CreateUserInput! @spread): User! @create @guard
+  updateUser(input: UpdateUserInput! @spread): User! @update @guard
+  upsertUser(input: UpsertUserInput! @spread): User! @upsert @guard
+  deleteUser(id: ID!): User! @delete @guard
+
+  createRole(input: CreateRoleInput! @spread): Role! @create @guard
+  updateRole(input: UpdateRoleInput! @spread): Role! @update @guard
+  upsertRole(input: UpsertRoleInput! @spread): Role! @upsert @guard
+  deleteRole(id: ID!): Role @delete @guard
+
+  register(
+    user_name: String!
+    first_name: String!
+    last_name: String!
+    email: String!
+    phone_number: String!
+    password: String!
+  ): Result!
+
+  login(email: String!, password: String!): Login!
+
+  logout: User! @guard
+
+  verifyPhoneNumber(verification_code: String!): Result @guard
+
+  forgotPassword(
+    email: String!
+    phone_number: String!
+    new_password: String!
+    confirm_password: String!
+    verification_code: String
+  ): Result @guard
+
+  resetPassword(
+    email: String!
+    phone_number: String!
+    password: String!
+    new_password: String!
+    confirm_password: String!
+    verification_code: String
+  ): Result @guard
+
+  # Ability
+  createAbility(
+    name: String @rules(apply: ["required", "unique:abilities"])
+    label: String @rules(apply: ["required"])
+  ): Ability @create @guard
+
+  updateAbility(
+    id: ID!
+    name: String @rules(apply: ["required", "unique:abilities"])
+    label: String @rules(apply: ["required"])
+  ): Ability @update @guard
+
+  deleteAbility(id: ID!): Ability @delete @guard
+
+  "Add a role to a user roles."
+  assignRole(user_id: ID!, role_id: ID!): User! @guard
+
+  "Change password"
+  changePassword(currentPassword: String, newPassword: String, reTypePassword: String): Result @guard
+
+  loginAs(id: ID!): LoginAs @guard
+
+  upsertAbility(input: UpsertAbilityInput @spread): Ability! @upsert @guard
+}

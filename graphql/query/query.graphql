@@ -1,0 +1,19 @@
+#import user.graphql
+
+type Query {
+    "List multiple roles."
+    roles("Filters by user." user_id: ID @eq): [Role!]! @paginate(defaultCount: 10) @guard
+
+    role(id: ID! @eq): Role @find @guard
+
+    # abilities
+    abilities(
+        "Sorting ascending and descending. Accept id, name, description, created_at"
+        orderBy: _ @orderBy(columns: ["id", "name", "label", "created_at"])
+    ): [Ability!] @paginate(defaultCount: 10) @guard
+
+    "Custom query. List all abilities/permissions of a user as an array of string."
+    getAbilities: JSON @guard
+
+    me: User @auth
+}

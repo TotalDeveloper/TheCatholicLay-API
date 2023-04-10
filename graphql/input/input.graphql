@@ -1,0 +1,114 @@
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String! @hash
+  phone_number: String!
+  device_name: String
+  parent_id: ID
+
+  roles: CreateRoleHasMany
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+  email: String
+  phone_number: String
+  parent_id: ID
+  roles: CreateRoleHasMany
+}
+
+input CreateUserBelongsToMany {
+  connect: [ID]
+  disconnect: [ID]
+  connect: [ID]
+  sync: [ID] # Useful for update, no need to delete previous.
+}
+
+input CreateUserBelongsTo {
+  connect: ID
+}
+
+input CreateUserHasMany {
+  connect: [ID!]
+}
+input CreateAbilityHasMany {
+  create: [CreateAbilityInput!]!
+  update: [UpdateAbilityInput!]
+  upsert: [UpsertAbilityInput!]
+  delete: ID
+}
+
+input UpdateAbilityHasMany {
+  create: [CreateAbilityInput!]!
+  update: [UpdateAbilityInput!]
+  upsert: [UpsertAbilityInput!]
+  delete: ID
+}
+
+input CreateAbilityInput {
+  name: String!
+  label: String!
+}
+
+input UpdateAbilityInput {
+  id: ID!
+  name: String!
+  label: String!
+}
+
+input UpsertAbilityInput {
+  id: ID
+  name: String
+  label: String
+}
+
+input CreateRoleBelongsTo {
+  connect: ID
+  create: CreateRoleInput
+  update: UpdateRoleInput
+  upsert: UpdateRoleInput
+}
+
+input CreateRoleHasMany {
+  create: [CreateRoleInput!]
+  connect: [ID!]
+}
+
+input CreateRoleInput {
+  name: String!
+  label: String!
+  abilities: CreateAbilityHasMany
+}
+
+input UpdateRoleInput {
+  id: ID!
+  name: String!
+  label: String
+  abilities: UpdateAbilityHasMany
+}
+
+input CreateRoleBelongsToMany {
+  sync: [ID!]
+}
+
+input CreateAbilityBelongsToMany {
+  sync: [ID!]
+}
+
+input UpsertRoleInput {
+  id: ID
+  name: String
+  label: String
+
+  abilities: CreateAbilityBelongsToMany
+}
+
+input UpsertUserInput {
+  id: ID
+  email: String
+  name: String
+  parent_id: ID
+  phone_number: String
+  roles: CreateRoleBelongsToMany
+}

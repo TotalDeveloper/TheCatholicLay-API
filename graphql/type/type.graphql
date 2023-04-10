@@ -1,0 +1,80 @@
+type Role {
+  id: ID!
+  name: String!
+  label: String!
+  created_at: DateTime
+  updated_at: DateTime
+  deleted_at: DateTime
+
+  abilities: [Ability!] @belongsToMany
+}
+
+type Ability {
+  id: ID!
+  name: String!
+  label: String!
+  created_at: DateTime!
+  updated_at: DateTime
+  deleted_at: DateTime
+
+  roles: [Role!]! @belongsToMany
+}
+
+"Account of a person who utilizes this application."
+type User {
+    "Unique primary key."
+    id: ID!
+
+    "Non-unique name."
+    name: String!
+
+    "Unique email address."
+    email: String!
+
+    "When the email was verified."
+    email_verified_at: DateTime
+
+    "When the account was created."
+    created_at: DateTime!
+
+    "When the account was last updated."
+    updated_at: DateTime!
+}
+
+
+type Result {
+  success: String
+  message: String
+}
+
+type Login {
+  id: Int!
+  name: String!
+  email: String!
+  token: String!
+}
+
+type LoginAs {
+  token: String
+}
+
+type Bank {
+  id: Int
+  name: String
+  code: String
+  description: String
+
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type City { 
+  id: Int
+  name: String
+  code: String
+  description: String
+  abbv: String
+
+  created_at: DateTime
+  updated_at: DateTime
+}
